@@ -18,12 +18,15 @@ def convert_mp4_to_wav_ffmpeg(input_file, output_file):
     subprocess.run(command, check=True)
 
 def download_video_audio(url, output_path):
-    yt = YouTube(url)
-    video_stream = yt.streams.filter(only_video=True, file_extension='mp4').order_by('resolution').desc().first()
-    audio_stream = yt.streams.filter(only_audio=True).first()
-    video_stream.download(output_path=output_path, filename='video_only.mp4')
-    audio_stream.download(output_path=output_path, filename='audio_only.mp4')
-    convert_mp4_to_wav_ffmpeg(os.path.join(output_path, 'audio_only.mp4'), os.path.join(output_path, 'audio_only.wav'))
+    try:
+        yt = YouTube(url)
+        video_stream = yt.streams.filter(only_video=True, file_extension='mp4').order_by('resolution').desc().first()
+        audio_stream = yt.streams.filter(only_audio=True).first()
+        video_stream.download(output_path=output_path, filename='video_only.mp4')
+        audio_stream.download(output_path=output_path, filename='audio_only.mp4')
+        convert_mp4_to_wav_ffmpeg(os.path.join(output_path, 'audio_only.mp4'), os.path.join(output_path, 'audio_only.wav'))
+    except Exception as e:
+        print(f"Error al descargar el video/audio: {e}")
 
 def transcribe_audio(audio_path, lang='en-US'):
     recognizer = sr.Recognizer()
@@ -51,7 +54,14 @@ def text_to_speech(text, lang, output_path):
     tts.save(audio_file)
     return audio_file
 
-def play_audio(file_path):
+#Este sistema depende mucho del utilitario llamado ffmpeg, que es un programa que se puede instalar en Windows y en Linux.
+def merge_video_audio(video_path, audio_path, output_path):
+    command = ['ffmpeg', '-i', video_path, '-i', audio_path, '-c:v', 'copy', '-c:a', 'aac', '-strict', 'experimental', output_path]
+    subprocess.run(command, check=True)
+
+
+
+def play_video(file_path):
     os.system(f"start {file_path}")
 
 output_path = 'D:\\VIDSIGN'
@@ -74,5 +84,13 @@ translated_text = translate_text(transcribed_text, src_lang='en', dest_lang='es'
 # Convertir texto traducido a audio
 audio_file = text_to_speech(translated_text, lang='es', output_path=output_path)
 
-# Reproducir el audio traducido
-play_audio(audio_file)
+# Ejemplo de uso de la función
+video_path = os.path.join(output_path, 'video_only.mp4')
+audio_path = os.path.join(output_path, 'translated_audio.mp3')
+merged_video_path = os.path.join(output_path, 'final_video.mp4')
+
+# Llamar a la función para combinar video y audio
+merge_video_audio(video_path, audio_path, merged_video_path)
+
+# Reproducir el vídeo combinado
+play_video(merged_video_path)
