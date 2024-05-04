@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "viddesign",
+  "private_key_id": "c9f5f5f5b3dcdde91553049078fccc379ea1cb91",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDCw83KtrDSKD0/\n05kdcMW5F1Gsi5sXciQaEE5IRHnpyxm0UrNLuj6rrwQpIzFf/2//l9UqFC/uPnh9\n0hyx7e0rmlhicuB89MSMA4ZEtxDSL0JRQJmKLJaQyhgvLJcmjbiFlWXmuZn82FmB\nGHKqpTN1Rsz8vgQ+a45J1oJbsS7KXLRRpCfCBQ6tDFl5ulUtg0nAJW8syNfl44Fo\nwouZyN0AkTXjSv1+DNuS/Ylg3TV8M8fy708x6h2MlSdvbBwpw9CLa6K0xEO2lGNn\ngLIyQY+03x1ad+Gobth4DrmXlN9dGorWkyIF5dgHD6fQ0hBzEF3V5mzz6btGXfgF\nY6in2vW5AgMBAAECggEAG07i+upUrpLPy7Q6gsM+Je6cGApXC5mIcFMa9s0LHvnI\nN91koFiT0vSuK6pwkNo69OZwD/9WnRwLPvEH7vbCS1vPyrX6vep/6HXSDK5yYFYa\nAVSCcro/vjtn2q1w4An89lX1PL2HVslq+0vXQA/7wBTWRxXJeIsSH05BZuPYAK1y\nCQGTrkKMubecV8AaafugHPzNETd7YqFpn0dx0Nz+HFDMSKMBgBWC/IYhU5+HAuur\nujphdh9+mkrBZwzMylfnlwBIXHXluiFmYKXXXBJtBiGAI/PX/ydJ+FS6B6UyF/96\nrHoiu+pnm2DC6FHBALAdoerWc6XOTkEWFVy6vyYPkQKBgQD0KMzXG4x569QGRMdW\nAmQwYdxWG8QAEVybzFST6FXV+GUFQOsEn25epDs+9hogev7bwqqJbpNXbzqqKqvh\nBOdMgzvR6RHWkgmXzb76zLcOqvRz2r+Wf33rwNnt18amuSpKD/3o5hDstwkxb7pi\nR0RpGz+Xu2EeXkwacDvgMvOd3QKBgQDMNcdVHMFvDbZqPIrajw1SdoaN4WRUDVZ/\ng9PuKBua/A5rYKyjK+232rJqPUWOyyP3TqkE7yKZ0vycloM5MJlD2LfJiBM0ZHK1\n7LdE11pG2lF0qjS3DzgL2F4LrRsJcPCYs4Eokw3nq0hJRcy6x3GgezsI28917fcO\nL06BKvhfjQKBgAcC7O74cY5GwW30p6zGoM3q4YLvhS9jUD+BHKSqtVxRp8UA2j7l\nvSuml7T1KEbqgUsaSf9sV3rZTNv6IblyhJnj4uHiSYrZ4sCjPerB2jfnnOF+1KWj\nv5/3h8qWubOr+ZTq5KW9hZrmnrL2vGl6FnLWP3tB/EX8+z5/HpkPnYNZAoGADYxT\n2TW7L579RzcVD0MGYz4x1x/pBBqObo9UdCx9CF9IpZ8YVQsJDnWX+Kxv/PVFQZca\nZ5Vl+kahM9JYimbLBFFQgDJi88rmQWOfFRYkiybY2KCiNrLvyPll4+hsLsgrbjYa\nj5KSDZizhwj2eD3bMAZ8+C19KhnLlklVMASlzdECgYEAwhoMRodv9AGo2fjP4N5f\nL2x+dl6Rx4R/7BVrrS5kjADv//SJKUqWbirPHW4wC202FqLYXpCT1eS+B+pVG6An\nfoxp78F6yOcpbDPO7EYDXakwxnNlEACmTzWPTwH6H6e1HELxYXHWp19ehXImVJNG\nHRL/TAcoG1ckS8ulIXkcDBI=\n-----END PRIVATE KEY-----\n",
+  "client_email": "speech-to-text@viddesign.iam.gserviceaccount.com",
+  "client_id": "114046659285388206712",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/speech-to-text%40viddesign.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
