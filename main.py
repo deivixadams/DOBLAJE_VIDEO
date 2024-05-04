@@ -1,31 +1,54 @@
 from directory_manager import DirectoryManager
 from audio_video_manager import AudioVideoManager
-from transcription_service import TranscriptionService
+#from google_transcription_service import TranscriptionService
+from whisper_transcription_service import TranscriptionService
 from translation_service import TranslationService
 from text_to_speech_service import TextToSpeechService
 from media_merger import MediaMerger
+import os
 
 def main():
-    output_path = 'D:\\VIDSIGN'
-    url = 'https://www.youtube.com/watch?v=RR5rIcK5pQ0&ab_channel=TheRoyalSociety'
-    
+    os.system('cls' if os.name == 'nt' else 'clear')  # Limpiar la consola
+    output_path = 'D:\\VIDSIGN'  # Define la ruta donde se guardarán los archivos
+
+    # Instancia y uso de DirectoryManager para preparar el directorio
     dir_manager = DirectoryManager(output_path)
+
+    # Instancia y uso de AudioVideoManager para descargar y convertir video y audio
     av_manager = AudioVideoManager(output_path)
-    av_manager.download_video_audio(url)
-    
+    av_manager.download_video_audio('https://www.youtube.com/shorts/Qb1xQ0muq5Q')
+
+    # Instancia y uso de TranscriptionService para transcribir el audio
     audio_path = os.path.join(output_path, 'audio_only.wav')
     trans_service = TranscriptionService(audio_path)
     transcribed_text = trans_service.transcribe_audio()
-    
+
+    # Instancia y uso de TranslationService para traducir el texto
     trans_service = TranslationService()
     translated_text = trans_service.translate_text(transcribed_text, 'en', 'es')
-    
-    tts_service = TextToSpeechService()
-    tts_path = tts_service.text_to_speech(translated_text, 'es', output_path)
-    
-    media_merger = MediaMerger()
-    final_video_path = os.path.join(output_path, 'final_video.mp4')
-    media_merger.merge_video_audio(os.path.join(output_path, 'video_only.mp4'), tts_path, final_video_path)
+
+    # Instancia y uso de TextToSpeechService para convertir texto a voz
+    tts_service = TextToSpeechService(output_path)  # Se corrige aquí pasando output_path
+    audio_file = tts_service.text_to_speech(translated_text, 'es')
+
+    # Instancia y uso de MediaMerger para combinar el video y el audio
+    if audio_file:
+        video_path = os.path.join(output_path, 'video_only.mp4')
+        merged_video_path = os.path.join(output_path, 'final_video.mp4')
+        media_merger = MediaMerger(output_path)
+        media_merger.merge_video_audio(video_path, audio_file, merged_video_path)
+
+        # Reproducir el video combinado
+        play_video(merged_video_path)
+    else:
+        print("No se generó el archivo de audio traducido.")
+
+def play_video(file_path):
+    import os
+    if os.path.exists(file_path):
+        os.system(f"start {file_path}")
+    else:
+        print(f"El archivo {file_path} no existe para reproducir.")
 
 if __name__ == "__main__":
     main()
