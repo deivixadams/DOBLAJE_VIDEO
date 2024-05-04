@@ -1,52 +1,54 @@
+from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips
 import subprocess
 import os
 
 class MediaMerger:
-    def __init__(self, output_path):
-        """
-        Inicializa el objeto MediaMerger.
-        
-        Args:
-        output_path (str): Ruta base donde se guardará el archivo de video combinado.
-        """
+    def __init__(self, video_path, audio_path, output_path):
+        self.video_path = video_path
+        self.audio_path = audio_path
         self.output_path = output_path
 
-    def merge_video_audio(self, video_path, audio_path, final_output):
-        """
-        Combina un archivo de video y un archivo de audio en un solo archivo de video.
+    def merge_media(self, last_seconds=10):
+        video_duration = self._get_duration(self.video_path)
+        audio_duration = self._get_duration(self.audio_path)
 
-        Args:
-        video_path (str): Ruta al archivo de video original.
-        audio_path (str): Ruta al archivo de audio que se superpondrá al video.
-        final_output (str): Ruta del archivo de salida donde se guardará el video combinado.
-
-        Returns:
-        bool: True si la combinación fue exitosa, False de lo contrario.
-        """
-        if os.path.exists(video_path) and os.path.exists(audio_path):
-            try:
-                # Comando ffmpeg para combinar video y audio manteniendo el video sin recodificar.
-                command = [
-                    'ffmpeg', '-i', video_path, '-i', audio_path, '-c:v', 'copy',
-                    '-c:a', 'aac', '-strict', 'experimental', final_output
-                ]
-                subprocess.run(command, check=True)
-                print(f"Video combinado creado con éxito en {final_output}")
-                return True
-            except subprocess.CalledProcessError as e:
-                print(f"Error al combinar video y audio: {e}")
-                return False
+        if video_duration < audio_duration:
+            self._extend_video(video_duration, audio_duration, last_seconds)
         else:
-            if not os.path.exists(video_path):
-                print(f"El archivo de video {video_path} no existe.")
-            if not os.path.exists(audio_path):
-                print(f"El archivo de audio {audio_path} no existe.")
-            return False
+            self._simple_merge()
 
-    def clean_up_temp_files(self):
-        """
-        Limpia archivos temporales si es necesario.
-        Este método puede ser extendido para realizar la limpieza según los requisitos específicos del proyecto.
-        """
-        # Implementación pendiente según necesidad.
-        pass
+    def _extend_video(self, video_duration, audio_duration, last_seconds):
+        video_clip = VideoFileClip(self.video_path)
+        audio_clip = AudioFileClip(self.audio_path)  # Cargando el audio traducido
+
+        if video_duration >= audio_duration:
+            extended_clip = video_clip.set_audio(audio_clip)  # No need to extend, just set audio
+        else:
+            extra_time = audio_duration - video_duration
+            number_of_repeats = int(extra_time / last_seconds) + 1
+
+            # Tomar el último segmento del video para repetir
+            last_segment = video_clip.subclip(max(0, video_duration - last_seconds), video_duration)
+
+            # Crear una lista de clips repetidos
+            clips = [video_clip] + [last_segment] * number_of_repeats
+            extended_clip = concatenate_videoclips(clips)
+
+            # Asegurarse de que el video extendido tenga la misma duración que el audio
+            extended_clip = extended_clip.set_duration(audio_duration)
+
+        # Configurar el clip de audio sobre el clip de video extendido
+        final_clip = extended_clip.set_audio(audio_clip)
+
+        final_clip.write_videofile(self.output_path, codec='libx264', audio_codec='aac')
+
+    def _get_duration(self, file_path):
+        result = subprocess.run(
+            ['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'default=noprint_wrappers=1:nokey=1', file_path],
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True
+        )
+        return float(result.stdout.strip())
+
+    def _simple_merge(self):
+        cmd = ['ffmpeg', '-i', self.video_path, '-i', self.audio_path, '-c:v', 'copy', '-c:a', 'aac', '-strict', '-2', '-y', self.output_path]
+        subprocess.run(cmd, check=True)
