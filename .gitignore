@@ -1,3 +1,13 @@
+
+BORRAME/
+WORKING_FINE/
+API_KEYS/
+GRAPHIC/
+OLD/
+API_KEYS/viddesign-c9f5f5f5b3dc.json
+API_KEYS
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -159,8 +169,3 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-BORRAME/
-WORKING_FINE/
-API_KEYS/
-GRAPHIC/
-OLD/
